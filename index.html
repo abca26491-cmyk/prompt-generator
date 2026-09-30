@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Little Prompt</title>
+  <meta name="description" content="A quiet random prompt generator for journaling, writing, photography, reading and reflection.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Little Prompt</h1>
+      <p class="tagline">A small nudge for the page, the lens, and the mind.</p>
+    </header>
+
+    <nav id="categories" aria-label="Prompt categories"></nav>
+
+    <section class="prompt-area" aria-live="polite">
+      <p id="prompt" class="prompt empty">Choose a category to receive a prompt.</p>
+      <div id="actions" class="actions" hidden>
+        <button id="another" type="button">Another Prompt</button>
+        <button id="copy" type="button" class="quiet">Copy</button>
+      </div>
+    </section>
+
+    <section class="daily" aria-labelledby="daily-title">
+      <h2 id="daily-title">Prompt of the Day</h2>
+      <p id="daily-meta" class="daily-meta"></p>
+      <p id="daily-prompt" class="daily-prompt"></p>
+    </section>
+  </main>
+  <script src="prompts.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
