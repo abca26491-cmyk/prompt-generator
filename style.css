@@ -1,91 +1,412 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Hanken+Grotesk:wght@400;500&display=swap");
+
+/* ------------------------------------------------------------
+   Little Prompt: "A Question Worth Staying With"
+   Palette: paper, ink, one faded-brown accent. Serif for the
+   words that matter, a quiet sans for the interface.
+   ------------------------------------------------------------ */
 :root {
-  --bg: #eceeea;
-  --ink: #26322f;
-  --muted: #6b7773;
-  --accent: #4f6f7d;
-  --rule: #c9d0cc;
-  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  color-scheme: light dark;
+  --desk: #e9e1d0;
+  --paper: #f4eee1;
+  --ink: #2b2825;
+  --muted: #61594e;
+  --accent: #6b4a36;
+  --accent-hover: #4f3526;
+  --rule: #cfc2a8;
+  --rule-strong: #a89a80;
+
+  --serif: "EB Garamond", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: "Hanken Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --rail: 11rem;
+  --gap: 2.75rem;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #1d2523; --ink: #e4e8e5; --muted: #98a5a0; --accent: #8fb0bf; --rule: #38443f; }
+  :root {
+    --desk: #1c1915;
+    --paper: #24201b;
+    --ink: #e8e0d0;
+    --muted: #a89d8b;
+    --accent: #cda987;
+    --accent-hover: #e0c1a2;
+    --rule: #453d33;
+    --rule-strong: #6a5f50;
+  }
 }
+
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body {
-  background: var(--bg);
+  background: var(--desk);
   color: var(--ink);
   font-family: var(--serif);
+  font-size: 1.125rem;
   line-height: 1.6;
   min-height: 100vh;
+  padding: 5rem 0 5rem;
+  -webkit-font-smoothing: antialiased;
 }
-main {
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: 4rem 1.5rem 3rem;
-}
-h1 {
-  font-size: clamp(2.2rem, 7vw, 3.2rem);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  margin: 0;
-  line-height: 1.1;
-}
-.tagline { color: var(--muted); font-style: italic; margin: 0.6rem 0 2.5rem; }
+::selection { background: var(--accent); color: var(--paper); }
+[hidden] { display: none !important; }
 
-nav { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; border-bottom: 1px solid var(--rule); }
+/* ---------- Layout: a narrow rail and a wide page, weighted to the left ---------- */
+main {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  grid-template-areas:
+    "head   head"
+    "nav    page"
+    ".      respond"
+    ".      daily"
+    "behind behind";
+  column-gap: var(--gap);
+  width: min(64rem, 100% - clamp(3rem, 12vw, 9rem));
+  margin-left: clamp(1.5rem, 9vw, 8rem);
+}
+header { grid-area: head; margin-bottom: 3.75rem; }
+nav { grid-area: nav; }
+.prompt-area { grid-area: page; }
+.daily { grid-area: daily; }
+
+/* ---------- Title ---------- */
+h1 {
+  font-size: clamp(2.6rem, 6.4vw, 4.75rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.012em;
+  max-width: 16ch;
+  margin: 0;
+  text-wrap: balance;
+}
+.tagline {
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 24rem;
+  margin: 1.5rem 0 0 calc(var(--rail) + var(--gap));
+}
+
+/* ---------- Categories: a marginal list ---------- */
+nav {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  padding-top: 0.25rem;
+}
 nav button {
-  font: inherit;
-  font-size: 1.05rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-align: left;
   background: none;
   border: 0;
-  border-bottom: 2px solid transparent;
+  border-left: 1px solid var(--rule);
   color: var(--muted);
-  padding: 0.5rem 0;
-  margin-bottom: -1px;
+  padding: 0.6rem 0 0.6rem 1rem;
   cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease;
 }
-nav button:hover { color: var(--ink); }
-nav button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+nav button:hover { color: var(--ink); border-left-color: var(--rule-strong); }
+nav button[aria-pressed="true"] { color: var(--accent); border-left-color: var(--accent); }
 
-.prompt-area { padding: 2.5rem 0 1rem; min-height: 16rem; }
+/* ---------- The page: where the question lives ---------- */
+.prompt-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2.5rem;
+  min-height: 25rem;
+  padding: clamp(1.75rem, 4.5vw, 3.5rem);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  box-shadow: inset 0 0 0 7px var(--paper), inset 0 0 0 8px var(--rule);
+}
 .prompt {
-  font-size: clamp(1.4rem, 4.5vw, 1.9rem);
-  line-height: 1.45;
-  margin: 0 0 2rem;
-  padding-left: 1.25rem;
-  border-left: 3px solid var(--accent);
+  font-size: clamp(1.65rem, 3.5vw, 2.25rem);
+  line-height: 1.38;
   max-width: 34rem;
+  margin: 0;
+  text-wrap: pretty;
+  transition: opacity 0.5s ease;
 }
-.prompt.empty { color: var(--muted); font-style: italic; font-size: 1.15rem; border-left-color: var(--rule); }
+.prompt.empty {
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--muted);
+}
+/* The first question settles onto the page. */
+.prompt:not(.empty) { animation: settle 0.7s ease backwards; }
+@keyframes settle { from { opacity: 0; } }
 
-.actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+/* Between questions the page dims while a button is pressed, then the new
+   question comes back gently. Pure CSS: no script changes needed. */
+main:has(#another:active) .prompt,
+main:has(nav button:active) .prompt {
+  opacity: 0;
+  transition-duration: 0.2s;
+}
+
+/* ---------- Controls: the foot of the page ---------- */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
 .actions button {
-  font: inherit;
-  font-size: 1rem;
-  padding: 0.6rem 1.3rem;
-  border-radius: 2px;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: var(--bg);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
   cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
-.actions button:hover { filter: brightness(1.1); }
-.actions button.quiet { background: none; color: var(--accent); }
+#another {
+  background: var(--accent);
+  color: var(--paper);
+  border: 1px solid var(--accent);
+  border-radius: 1px;
+  padding: 0.7rem 1.5rem;
+}
+#another:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.actions button.quiet {
+  margin-left: auto;
+  background: none;
+  color: var(--muted);
+  border: 0;
+  border-bottom: 1px solid var(--rule-strong);
+  padding: 0.25rem 0;
+}
+.actions button.quiet:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
+/* ---------- Prompt of the Day: a note in the margin ---------- */
 .daily {
-  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  column-gap: 1.75rem;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+.daily h2 {
+  grid-column: 1;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  margin: 0;
+}
+.daily-meta {
+  grid-column: 1;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--muted);
+  margin: 0.35rem 0 0;
+}
+.daily-prompt {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  font-size: 1.3rem;
+  font-style: italic;
+  line-height: 1.5;
+  max-width: 32rem;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ---------- Focus ---------- */
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- Small screens: one column, categories become a row ---------- */
+@media (max-width: 760px) {
+  body { padding: 2.75rem 0 3.5rem; font-size: 1.05rem; }
+  main {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "nav" "page" "respond" "daily" "behind";
+    width: calc(100% - 2.5rem);
+    margin-left: 1.25rem;
+  }
+  header { margin-bottom: 2.25rem; }
+  .tagline { margin-left: 0; font-size: 1.15rem; }
+  nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0 1.4rem;
+    margin-bottom: 1.5rem;
+    padding-top: 0;
+  }
+  nav button {
+    border-left: 0;
+    border-bottom: 1px solid transparent;
+    padding: 0.55rem 0;
+  }
+  nav button:hover { border-bottom-color: var(--rule-strong); }
+  nav button[aria-pressed="true"] { border-bottom-color: var(--accent); }
+  .prompt-area { min-height: 21rem; }
+  .actions { gap: 1rem; }
+  .daily { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; margin-top: 2.75rem; }
+  .daily h2, .daily-meta, .daily-prompt { grid-column: 1; grid-row: auto; }
+  .daily-meta { margin-bottom: 0.9rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prompt, nav button, .actions button { transition: none; animation: none; }
+  .prompt:not(.empty) { animation: none; }
+}
+
+/* ---------- Leaving a thought ---------- */
+.respond { grid-area: respond; max-width: 40rem; margin-top: 2.25rem; }
+.respond-invite {
+  display: block;
+  font-size: 1.3rem;
+  font-style: italic;
+  line-height: 1.45;
+  margin: 0 0 0.9rem;
+}
+.respond textarea {
+  display: block;
+  width: 100%;
+  min-height: 9.5rem;
+  resize: vertical;
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 1rem 1.15rem;
+  transition: border-color 0.25s ease;
+}
+.respond textarea::placeholder { color: var(--muted); opacity: 1; font-style: italic; }
+.respond textarea:hover { border-color: var(--rule-strong); }
+.respond textarea:focus { border-color: var(--accent); }
+.respond textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.respond-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.85rem;
+}
+.counter { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); transition: color 0.25s ease; }
+.counter.low { color: var(--accent); }
+#leave {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  background: none;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 1px;
+  padding: 0.6rem 1.35rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+#leave:hover:not(:disabled) { background: var(--accent); color: var(--paper); }
+#leave:disabled { opacity: 0.45; cursor: default; }
+.respond-note {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 32rem;
+  margin: 1rem 0 0;
+}
+.respond-status {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--accent);
+  max-width: 32rem;
+  min-height: 1.5em;
+  margin: 0.75rem 0 0;
+}
+
+/* ---------- Things people left behind: fragments, not a feed ---------- */
+.left-behind {
+  grid-area: behind;
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  column-gap: var(--gap);
+  margin-top: 5rem;
   padding-top: 2rem;
   border-top: 1px solid var(--rule);
 }
-.daily h2 { font-size: 1.3rem; font-weight: 400; margin: 0; }
-.daily-meta { color: var(--muted); font-style: italic; font-size: 0.95rem; margin: 0.2rem 0 1rem; }
-.daily-prompt { font-size: 1.2rem; line-height: 1.5; margin: 0; max-width: 34rem; }
-
-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-[hidden] { display: none !important; }
-
-@media (max-width: 480px) {
-  main { padding-top: 2.5rem; }
-  nav { gap: 0.2rem 1.1rem; }
-  .actions button { flex: 1; }
+.left-behind h2 {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
 }
+.left-note {
+  grid-column: 2;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 32rem;
+  margin: 0.35rem 0 2.25rem;
+}
+.entries { grid-column: 2; list-style: none; margin: 0; padding: 0; }
+.entry { max-width: 34rem; padding: 1.75rem 0 1.5rem; border-top: 1px solid var(--rule); }
+.entry:first-child { border-top: 0; padding-top: 0; }
+.entry:nth-child(even) { margin-left: 3.5rem; }
+.entry:nth-child(3n) { margin-left: 1.25rem; }
+.entry-question {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  padding-left: 0.9rem;
+  border-left: 1px solid var(--rule-strong);
+}
+.entry-text { font-size: 1.3rem; line-height: 1.55; margin: 0; white-space: pre-line; text-wrap: pretty; }
+.entry-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.report {
+  font: inherit;
+  background: none;
+  border: 0;
+  color: var(--muted);
+  padding: 0.2rem 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: color 0.25s ease, text-decoration-color 0.25s ease;
+}
+.report:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+@media (max-width: 760px) {
+  .respond { margin-top: 1.75rem; }
+  .respond-foot { flex-wrap: wrap; }
+  .left-behind { grid-template-columns: minmax(0, 1fr); margin-top: 3.5rem; }
+  .left-behind h2, .left-note, .entries { grid-column: 1; grid-row: auto; }
+  .left-behind h2 { margin-bottom: 0.5rem; }
+  .entry:nth-child(even) { margin-left: 1.25rem; }
+  .entry:nth-child(3n) { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .counter, #leave, .respond textarea, .report { transition: none; }
+}
+
+/* ---------- Public section: status line and report position ---------- */
+.entries-status { margin: 0 0 1rem; }
+.entry-foot .report { margin-left: auto; }

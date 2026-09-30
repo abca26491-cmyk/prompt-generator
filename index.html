@@ -10,8 +10,8 @@
 <body>
   <main>
     <header>
-      <h1>Little Prompt</h1>
-      <p class="tagline">A small nudge for the page, the lens, and the mind.</p>
+      <h1>A Question Worth Staying With</h1>
+      <p class="tagline">Some questions are meant to be answered. Others are meant to be remembered.</p>
     </header>
 
     <nav id="categories" aria-label="Prompt categories"></nav>
@@ -19,9 +19,20 @@
     <section class="prompt-area" aria-live="polite">
       <p id="prompt" class="prompt empty">Choose a category to receive a prompt.</p>
       <div id="actions" class="actions" hidden>
-        <button id="another" type="button">Another Prompt</button>
+        <button id="another" type="button">Stay With a Question</button>
         <button id="copy" type="button" class="quiet">Copy</button>
       </div>
+    </section>
+
+    <section class="respond" id="respond" hidden>
+      <label for="response" class="respond-invite">If you have something to leave here, you can.</label>
+      <textarea id="response" maxlength="500" rows="5" autocomplete="off" placeholder="Write as much or as little as you like."></textarea>
+      <div class="respond-foot">
+        <span id="counter" class="counter">500 characters left</span>
+        <button id="leave" type="button" disabled>Leave it here</button>
+      </div>
+      <p class="respond-note">Anonymous: no name or email needed. What you leave here is read first, and once approved it may be shown publicly to strangers, so please keep names and personal details out of it.</p>
+      <p id="respond-status" class="respond-status" role="status"></p>
     </section>
 
     <section class="daily" aria-labelledby="daily-title">
@@ -29,8 +40,19 @@
       <p id="daily-meta" class="daily-meta"></p>
       <p id="daily-prompt" class="daily-prompt"></p>
     </section>
+
+    <section class="left-behind" aria-labelledby="left-title">
+      <h2 id="left-title">Things people left behind</h2>
+      <p class="left-note">Words left by other visitors, anonymously. Each one appears here only after it has been read and approved.</p>
+      <p id="entries-status" class="left-note entries-status" role="status"></p>
+      <ul id="entries" class="entries"></ul>
+    </section>
   </main>
   <script src="prompts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"
+          integrity="sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok"
+          crossorigin="anonymous"></script>
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
